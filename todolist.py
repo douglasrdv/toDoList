@@ -43,10 +43,17 @@ def obter_tarefa_por_id(id):
 @app.route('/tarefas/<int:id>', methods=['PUT'])
 def editar_tarefa_por_id(id):
     tarefa_alterada = request.get_json()
-    for indice, tarefa in enumerate(tarefas):
-        if tarefa.get('id') == id:
-            tarefas[indice].update(tarefa_alterada)
-            return jsonify(tarefas[indice])
+   
+    tarefa_existente = next((t for t in tarefas if t.get('id') == id), None)
+
+    if tarefa_existente:        
+        for indice, tarefa in enumerate(tarefas):
+            if tarefa.get('id') == id:
+                tarefas[indice].update(tarefa_alterada)
+                return jsonify(tarefas[indice])
+    else:
+        abort(404, description="Tarefa não encontrada")
+
         
 #Validação de dados para tarefas
 def validar_tarefa(dados):
