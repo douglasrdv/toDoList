@@ -28,10 +28,12 @@ def obter_tarefas():
 # Consultar tarefa por id
 @app.route('/tarefas/<int:id>', methods=['GET'])
 def obter_tarefa_por_id(id):
-    for tarefa in tarefas:
-        if tarefa.get('id') == id:
-        	return jsonify(tarefa)
-
+    tarefa = tarefas.get(id)
+    if tarefa is not None:
+        return jsonify(tarefa)
+    else:
+        return jsonify({"mensagem": "Tarefa não encontrada"}), 404
+    
 # Editar tarefa por id
 @app.route('/tarefas/<int:id>', methods=['PUT'])
 def editar_tarefa_por_id(id):
