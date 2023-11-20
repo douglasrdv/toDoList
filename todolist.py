@@ -64,13 +64,11 @@ def incluir_nova_tarefa():
     return jsonify(tarefas)
 
 # Excluir tarefa por id
-@app.route('/tarefas/<int:id>', methods=['PUT'])
-def editar_tarefa_por_id(id):
-    tarefa_alterada = request.get_json()
-    validar_tarefa(tarefa_alterada)
+@app.route('/tarefas/<int:id>', methods=['DELETE'])
+def excluir_tarefa_por_id(id):
     for indice, tarefa in enumerate(tarefas):
         if tarefa.get('id') == id:
-            tarefas[indice].update(tarefa_alterada)
-            return jsonify(tarefas[indice])
+            del tarefas[indice]
+            return jsonify(tarefas)
 
 app.run(port=5000, host='localhost', debug=True)
