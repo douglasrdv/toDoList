@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 
 app = Flask(__name__)
 
@@ -26,13 +26,17 @@ def obter_tarefas():
     return jsonify(tarefas)
 
 # Consultar tarefa por id
+def obter_tarefa_por_id_util(id):
+    tarefa = next((t for t in tarefas if t.get('id') == id), None)
+    return tarefa
+
 @app.route('/tarefas/<int:id>', methods=['GET'])
 def obter_tarefa_por_id(id):
-    tarefa = tarefas.get(id)
-    if tarefa is not None:
+    tarefa = obter_tarefa_por_id_util(id)
+    if tarefa:
         return jsonify(tarefa)
     else:
-        return jsonify({"mensagem": "Tarefa não encontrada"}), 404
+        abort(404, description="Tarefa não encontrada")
     
 # Editar tarefa por id
 @app.route('/tarefas/<int:id>', methods=['PUT'])
