@@ -6,17 +6,17 @@ tarefas = [
     {
         'id': 1,
         'titulo': 'Estudar Python',
-        'status': 'Pendente'
+        'estado': 'Pendente'
     },
     {
         'id': 2,
         'titulo': 'Fazer exercícios de Flask',
-        'status': 'Concluída'
+        'estado': 'Concluída'
     },
     {
         'id': 3,
         'titulo': 'Preparar apresentação',
-        'status': 'Em andamento'
+        'estado': 'Em andamento'
     },
 ]
 
@@ -56,10 +56,10 @@ def editar_tarefa_por_id(id):
         
 
 def validar_tarefa(dados):
-    if 'titulo' not in dados or 'status' not in dados:
-        abort(400, description="Campos 'titulo' e 'status' são obrigatórios.")
-    if not isinstance(dados['titulo'], str) or not isinstance(dados['status'], str):
-        abort(400, description="Campos 'titulo' e 'status' devem ser strings.")
+    if 'titulo' not in dados or 'estado' not in dados:
+        abort(400, description="Campos 'titulo' e 'estado' são obrigatórios.")
+    if not isinstance(dados['titulo'], str) or not isinstance(dados['estado'], str):
+        abort(400, description="Campos 'titulo' e 'estado' devem ser strings.")
 
 
 @app.route('/tarefas', methods=['POST'])

@@ -66,7 +66,7 @@ Antes de começar, certifique-se de ter o seguinte instalado em seu ambiente:
 2. Execute a aplicação Flask:
 
     ```bash
-    python3 nome-do-arquivo.py
+    python3 todolist.py
     ```
 
     Isso iniciará o servidor Flask na porta 5000.
