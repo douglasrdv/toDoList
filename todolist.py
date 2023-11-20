@@ -30,6 +30,7 @@ def obter_tarefa_por_id_util(id):
     tarefa = next((t for t in tarefas if t.get('id') == id), None)
     return tarefa
 
+# Obtenção de tarefa por ID.
 @app.route('/tarefas/<int:id>', methods=['GET'])
 def obter_tarefa_por_id(id):
     tarefa = obter_tarefa_por_id_util(id)
@@ -46,20 +47,30 @@ def editar_tarefa_por_id(id):
         if tarefa.get('id') == id:
             tarefas[indice].update(tarefa_alterada)
             return jsonify(tarefas[indice])
+        
+#Validação de dados para tarefas
+def validar_tarefa(dados):
+    if 'titulo' not in dados or 'status' not in dados:
+        abort(400, description="Campos 'titulo' e 'status' são obrigatórios.")
+    if not isinstance(dados['titulo'], str) or not isinstance(dados['status'], str):
+        abort(400, description="Campos 'titulo' e 'status' devem ser strings.")
 
 # Criar nova tarefa
 @app.route('/tarefas', methods=['POST'])
 def incluir_nova_tarefa():
     nova_tarefa = request.get_json()
+    validar_tarefa(nova_tarefa)
     tarefas.append(nova_tarefa)
     return jsonify(tarefas)
 
 # Excluir tarefa por id
-@app.route('/tarefas/<int:id>', methods=['DELETE'])
-def excluir_tarefa(id):
+@app.route('/tarefas/<int:id>', methods=['PUT'])
+def editar_tarefa_por_id(id):
+    tarefa_alterada = request.get_json()
+    validar_tarefa(tarefa_alterada)
     for indice, tarefa in enumerate(tarefas):
         if tarefa.get('id') == id:
-            del tarefas[indice]
-    return jsonify(tarefas)
+            tarefas[indice].update(tarefa_alterada)
+            return jsonify(tarefas[indice])
 
 app.run(port=5000, host='localhost', debug=True)
